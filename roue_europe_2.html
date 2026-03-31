@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roue Europe — Hérault Sport</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --magenta: #C2185B;
+    --magenta-light: #E91E8C;
+    --magenta-pale: #FCE4EC;
+    --magenta-dark: #880E4F;
+    --blue: #1565C0;
+    --blue-light: #1E88E5;
+    --blue-pale: #E3F2FD;
+    --green: #2E7D32;
+    --green-light: #43A047;
+    --green-pale: #E8F5E9;
+    --white: #FFFFFF;
+    --gray-bg: #F8F5F7;
+    --gray-light: #EEE8EC;
+    --text-dark: #1A0A10;
+    --text-mid: #5C3349;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--gray-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 12px 24px;
+    gap: 16px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .logo-badge {
+    background: var(--magenta);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  header h1 {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--magenta-dark);
+    letter-spacing: -.01em;
+  }
+
+  .main-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ── WHEEL ── */
+  .wheel-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  #wheel-wrap {
+    position: relative;
+    width: 320px;
+    height: 320px;
+  }
+
+  #wheel-canvas {
+    border-radius: 50%;
+    display: block;
+    filter: drop-shadow(0 4px 16px rgba(194,24,91,0.18));
+  }
+
+  #pointer {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-top: 30px solid var(--magenta-dark);
+    z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  }
+
+  #spin-btn {
+    padding: 14px 52px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 30px;
+    border: none;
+    background: var(--magenta);
+    color: var(--white);
+    cursor: pointer;
+    letter-spacing: .02em;
+    transition: background .15s, transform .1s, box-shadow .15s;
+    box-shadow: 0 4px 14px rgba(194,24,91,0.35);
+  }
+  #spin-btn:hover { background: var(--magenta-light); box-shadow: 0 6px 18px rgba(233,30,140,0.4); }
+  #spin-btn:active { transform: scale(0.97); }
+  #spin-btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+  /* ── RESULT ── */
+  #result-box {
+    width: 320px;
+    border-radius: 16px;
+    padding: 16px 20px;
+    text-align: center;
+    border: 2px solid var(--gray-light);
+    background: var(--white);
+    transition: background .3s, border-color .3s;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+  }
+  #result-cat {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--text-mid);
+  }
+  #result-label {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-dark);
+  }
+  #result-hint {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    margin-top: 2px;
+  }
+
+  /* ── SCORES ── */
+  .score-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 220px;
+    flex: 1;
+    max-width: 320px;
+  }
+
+  .score-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--magenta-dark);
+    margin-bottom: 2px;
+  }
+
+  .team-card {
+    background: var(--white);
+    border: 2px solid var(--gray-light);
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color .2s;
+  }
+  .team-card.active-team { border-color: var(--magenta); }
+
+  .team-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .team-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  .team-flag {
+    font-size: 20px;
+  }
+
+  .team-score-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .score-display {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--magenta);
+    min-width: 40px;
+  }
+
+  .score-btns {
+    display: flex;
+    gap: 5px;
+  }
+
+  .score-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--magenta);
+    background: transparent;
+    color: var(--magenta);
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .12s, color .12s;
+    font-family: 'Nunito', sans-serif;
+    line-height: 1;
+  }
+  .score-btn:hover { background: var(--magenta); color: var(--white); }
+  .score-btn.minus { border-color: var(--gray-light); color: var(--text-mid); }
+  .score-btn.minus:hover { background: var(--gray-light); color: var(--text-dark); }
+
+  .pts-btns {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .pts-btn {
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1.5px solid var(--magenta-pale);
+    background: var(--magenta-pale);
+    color: var(--magenta-dark);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: background .12s, border-color .12s;
+  }
+  .pts-btn:hover { background: var(--magenta); color: var(--white); border-color: var(--magenta); }
+
+  .reset-btn {
+    width: 100%;
+    padding: 9px;
+    border-radius: 10px;
+    border: 1.5px solid var(--gray-light);
+    background: transparent;
+    color: var(--text-mid);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: background .12s;
+    margin-top: 4px;
+  }
+  .reset-btn:hover { background: var(--gray-light); }
+
+  .legend {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-mid);
+    align-items: center;
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-badge">Hérault Sport</div>
+  <h1>La Roue Europe</h1>
+</header>
+
+<div class="main-layout">
+
+  <!-- ROUE -->
+  <div class="wheel-col">
+    <div id="wheel-wrap">
+      <div id="pointer"></div>
+      <canvas id="wheel-canvas" width="320" height="320"></canvas>
+    </div>
+
+    <div class="legend">
+      <span class="legend-dot" style="background:#C2185B"></span> Question
+      <span class="legend-dot" style="background:#EEE8EC; border: 1.5px solid #C2185B"></span> Défi
+      <span class="legend-dot" style="background:#EEE8EC; border: 1.5px solid #C2185B"></span> Défi au choix
+    </div>
+
+    <button id="spin-btn" onclick="spin()">Tourner !</button>
+
+    <div id="result-box">
+      <div id="result-cat" style="color:#B0899E">En attente</div>
+      <div id="result-label" style="color:#B0899E; font-size:15px">Appuie sur Tourner !</div>
+      <div id="result-hint"></div>
+    </div>
+  </div>
+
+  <!-- SCORES -->
+  <div class="score-col">
+    <div class="score-title">Scores des équipes</div>
+
+    <div class="team-card" id="card-0">
+      <div class="team-top">
+        <div class="team-name">Équipe France</div>
+        <div class="team-flag">🇫🇷</div>
+      </div>
+      <div class="team-score-row">
+        <div class="score-display" id="score-0">0</div>
+        <div class="score-btns">
+          <button class="score-btn minus" onclick="addScore(0,-1)">−</button>
+          <button class="score-btn" onclick="addScore(0,1)">+</button>
+        </div>
+        <div class="pts-btns">
+          <button class="pts-btn" onclick="addScore(0,2)">+2</button>
+          <button class="pts-btn" onclick="addScore(0,3)">+3</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card" id="card-1">
+      <div class="team-top">
+        <div class="team-name">Équipe Espagne</div>
+        <div class="team-flag">🇪🇸</div>
+      </div>
+      <div class="team-score-row">
+        <div class="score-display" id="score-1">0</div>
+        <div class="score-btns">
+          <button class="score-btn minus" onclick="addScore(1,-1)">−</button>
+          <button class="score-btn" onclick="addScore(1,1)">+</button>
+        </div>
+        <div class="pts-btns">
+          <button class="pts-btn" onclick="addScore(1,2)">+2</button>
+          <button class="pts-btn" onclick="addScore(1,3)">+3</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card" id="card-2">
+      <div class="team-top">
+        <div class="team-name">Équipe Italie</div>
+        <div class="team-flag">🇮🇹</div>
+      </div>
+      <div class="team-score-row">
+        <div class="score-display" id="score-2">0</div>
+        <div class="score-btns">
+          <button class="score-btn minus" onclick="addScore(2,-1)">−</button>
+          <button class="score-btn" onclick="addScore(2,1)">+</button>
+        </div>
+        <div class="pts-btns">
+          <button class="pts-btn" onclick="addScore(2,2)">+2</button>
+          <button class="pts-btn" onclick="addScore(2,3)">+3</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetScores()">Remettre les scores à zéro</button>
+  </div>
+
+</div>
+
+<script>
+const segments = [
+  { label: "Question", sub: "Drapeaux & capitales",   cat: "question" },
+  { label: "Question", sub: "Sports & JO",            cat: "question" },
+  { label: "Défi",     sub: "Tir à la corde",         cat: "defi"     },
+  { label: "Question", sub: "Culture & traditions",   cat: "question" },
+  { label: "Question", sub: "Chiffres & anecdotes",   cat: "question" },
+  { label: "Défi",     sub: "Morpion géant",          cat: "defi"     },
+  { label: "Question", sub: "Pays européens",         cat: "question" },
+  { label: "Question", sub: "Drapeaux & capitales",   cat: "question" },
+  { label: "Défi",     sub: "Blaze Pods",             cat: "defi"     },
+  { label: "Question", sub: "Sports & JO",            cat: "question" },
+  { label: "Question", sub: "Culture & traditions",   cat: "question" },
+  { label: "Défi",     sub: "Au choix !",             cat: "choix"    },
+  { label: "Question", sub: "Chiffres & anecdotes",   cat: "question" },
+  { label: "Question", sub: "Pays européens",         cat: "question" },
+];
+
+const COL_Q   = "#C2185B";
+const COL_Q2  = "#AD1457";
+const COL_D   = "#F8F5F7";
+const COL_D2  = "#EEE8EC";
+const COL_C   = "#F8F5F7";
+const COL_C2  = "#EEE8EC";
+
+const N = segments.length;
+const arc = (2 * Math.PI) / N;
+const canvas = document.getElementById('wheel-canvas');
+const ctx = canvas.getContext('2d');
+const cx = 160, cy = 160, r = 152;
+let currentAngle = -Math.PI / 2;
+let spinning = false;
+const scores = [0, 0, 0];
+
+function segColor(seg, i) {
+  if (seg.cat === 'choix') return i % 2 === 0 ? COL_C : COL_C2;
+  if (seg.cat === 'defi') return i % 2 === 0 ? COL_D : COL_D2;
+  return i % 2 === 0 ? COL_Q : COL_Q2;
+}
+
+function drawWheel(angle) {
+  ctx.clearRect(0, 0, 320, 320);
+  for (let i = 0; i < N; i++) {
+    const start = angle + i * arc;
+    const end = start + arc;
+    const seg = segments[i];
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, end);
+    ctx.closePath();
+    ctx.fillStyle = segColor(seg, i);
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(start + arc / 2);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = seg.cat === 'question' ? '#ffffff' : seg.cat === 'choix' ? '#4A2700' : '#880E4F';
+
+    ctx.font = '700 12px Nunito, sans-serif';
+    ctx.fillText(seg.label, r - 10, -5);
+
+    ctx.font = '600 9px Nunito, sans-serif';
+    ctx.globalAlpha = 0.85;
+    ctx.fillText(seg.sub, r - 10, 7);
+    ctx.globalAlpha = 1;
+
+    ctx.restore();
+  }
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, 24, 0, 2 * Math.PI);
+  ctx.fillStyle = '#C2185B';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.font = '900 10px Nunito, sans-serif';
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.fillText('GO', cx, cy + 4);
+}
+
+function getWinner(angle) {
+  const pointerAngle = -Math.PI / 2;
+  let relative = ((pointerAngle - angle) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+  const idx = Math.floor(relative / arc) % N;
+  return segments[idx];
+}
+
+function spin() {
+  if (spinning) return;
+  spinning = true;
+  document.getElementById('spin-btn').disabled = true;
+
+  document.getElementById('result-cat').textContent = '';
+  document.getElementById('result-label').textContent = '...';
+  document.getElementById('result-hint').textContent = '';
+  const box = document.getElementById('result-box');
+  box.style.background = '#fff';
+  box.style.borderColor = '#EEE8EC';
+
+  const extraSpins = (6 + Math.floor(Math.random() * 5)) * 2 * Math.PI;
+  const targetAngle = currentAngle + extraSpins + Math.random() * 2 * Math.PI;
+  const duration = 3800 + Math.random() * 1000;
+  const startAngle = currentAngle;
+  const startTime = performance.now();
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+  function animate(now) {
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    currentAngle = startAngle + (targetAngle - startAngle) * easeOut(t);
+    drawWheel(currentAngle);
+    if (t < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      currentAngle = targetAngle;
+      spinning = false;
+      document.getElementById('spin-btn').disabled = false;
+      const winner = getWinner(currentAngle);
+      showResult(winner);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+function showResult(winner) {
+  const box = document.getElementById('result-box');
+  const cat = document.getElementById('result-cat');
+  const lbl = document.getElementById('result-label');
+  const hint = document.getElementById('result-hint');
+
+  if (winner.cat === 'question') {
+    box.style.background = '#E3F2FD';
+    box.style.borderColor = '#1E88E5';
+    cat.style.color = '#1565C0';
+    lbl.style.color = '#0D47A1';
+    hint.style.color = '#1565C0';
+    cat.textContent = 'Question';
+    hint.textContent = 'Lis la question a voix haute !';
+  } else {
+    box.style.background = '#E8F5E9';
+    box.style.borderColor = '#43A047';
+    cat.style.color = '#2E7D32';
+    lbl.style.color = '#1B5E20';
+    hint.style.color = '#2E7D32';
+    cat.textContent = 'Defi sportif';
+    hint.textContent = 'Lancez le defi immediatement !';
+  }
+  lbl.textContent = winner.sub;
+}
+
+function addScore(team, pts) {
+  scores[team] = Math.max(0, scores[team] + pts);
+  document.getElementById('score-' + team).textContent = scores[team];
+  document.querySelectorAll('.team-card').forEach((c, i) => {
+    c.classList.toggle('active-team', scores[i] === Math.max(...scores) && scores[i] > 0);
+  });
+}
+
+function resetScores() {
+  scores.fill(0);
+  for (let i = 0; i < 3; i++) {
+    document.getElementById('score-' + i).textContent = '0';
+  }
+  document.querySelectorAll('.team-card').forEach(c => c.classList.remove('active-team'));
+}
+
+drawWheel(currentAngle);
+</script>
+</body>
+</html>
