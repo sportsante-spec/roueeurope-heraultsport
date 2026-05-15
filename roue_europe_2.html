@@ -3,21 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roue Europe — Hérault Sport</title>
+<title>Roue — Hérault Sport</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
   :root {
-    --magenta: #C2185B;
-    --magenta-light: #E91E8C;
-    --magenta-pale: #FCE4EC;
-    --magenta-dark: #880E4F;
-    --blue: #1565C0;
-    --blue-light: #1E88E5;
-    --blue-pale: #E3F2FD;
-    --green: #2E7D32;
-    --green-light: #43A047;
-    --green-pale: #E8F5E9;
+    --mg: #C2185B;
+    --mg-light: #E91E8C;
+    --mg-pale: #FCE4EC;
+    --mg-dark: #880E4F;
     --white: #FFFFFF;
     --gray-bg: #F8F5F7;
     --gray-light: #EEE8EC;
@@ -31,24 +25,171 @@
     font-family: 'Nunito', sans-serif;
     background: var(--gray-bg);
     min-height: 100vh;
+  }
+
+  /* ══════════════════════════════
+     ÉCRAN CONFIG
+  ══════════════════════════════ */
+  #screen-config {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 16px 12px 24px;
-    gap: 16px;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px 16px;
+    gap: 20px;
+  }
+
+  .config-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 28px 24px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 4px 24px rgba(194,24,91,0.10);
+  }
+
+  .config-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .config-badge {
+    background: var(--mg);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  .config-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--mg-dark);
+  }
+
+  .config-section-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--text-mid);
+    margin-bottom: 10px;
+  }
+
+  .nb-equipes-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .nb-btn {
+    flex: 1;
+    min-width: 44px;
+    padding: 10px 0;
+    border-radius: 12px;
+    border: 2px solid var(--gray-light);
+    background: transparent;
+    color: var(--text-mid);
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all .15s;
+  }
+  .nb-btn:hover { border-color: var(--mg); color: var(--mg); }
+  .nb-btn.selected { border-color: var(--mg); background: var(--mg); color: var(--white); }
+
+  .equipes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .equipe-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .equipe-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--mg-pale);
+    color: var(--mg-dark);
+    font-size: 13px;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .equipe-input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--gray-light);
+    background: var(--gray-bg);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .equipe-input:focus { border-color: var(--mg); background: var(--white); }
+
+  .start-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 14px;
+    border: none;
+    background: var(--mg);
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    letter-spacing: .02em;
+    box-shadow: 0 4px 14px rgba(194,24,91,0.35);
+    transition: background .15s, transform .1s;
+  }
+  .start-btn:hover { background: var(--mg-light); }
+  .start-btn:active { transform: scale(0.98); }
+
+  /* ══════════════════════════════
+     ÉCRAN ANIMATION
+  ══════════════════════════════ */
+  #screen-anim {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 12px 24px;
+    gap: 14px;
+    min-height: 100vh;
   }
 
   header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
+    justify-content: space-between;
     width: 100%;
-    max-width: 700px;
+    max-width: 900px;
+  }
+
+  .header-left {
+    display: flex; align-items: center; gap: 10px;
   }
 
   .logo-badge {
-    background: var(--magenta);
+    background: var(--mg);
     color: var(--white);
     font-size: 11px;
     font-weight: 800;
@@ -59,15 +200,28 @@
   }
 
   header h1 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 900;
-    color: var(--magenta-dark);
-    letter-spacing: -.01em;
+    color: var(--mg-dark);
   }
+
+  .back-btn {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--gray-light);
+    background: var(--white);
+    color: var(--text-mid);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all .12s;
+  }
+  .back-btn:hover { border-color: var(--mg); color: var(--mg); }
 
   .main-layout {
     display: flex;
-    gap: 20px;
+    gap: 18px;
     width: 100%;
     max-width: 900px;
     align-items: flex-start;
@@ -75,18 +229,17 @@
     justify-content: center;
   }
 
-  /* ── WHEEL ── */
+  /* Roue */
   .wheel-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
   }
 
   #wheel-wrap {
     position: relative;
-    width: 320px;
-    height: 320px;
+    width: 320px; height: 320px;
   }
 
   #wheel-canvas {
@@ -97,13 +250,12 @@
 
   #pointer {
     position: absolute;
-    top: -16px;
-    left: 50%;
+    top: -16px; left: 50%;
     transform: translateX(-50%);
     width: 0; height: 0;
     border-left: 13px solid transparent;
     border-right: 13px solid transparent;
-    border-top: 30px solid var(--magenta-dark);
+    border-top: 30px solid var(--mg-dark);
     z-index: 10;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
   }
@@ -115,154 +267,154 @@
     font-weight: 800;
     border-radius: 30px;
     border: none;
-    background: var(--magenta);
+    background: var(--mg);
     color: var(--white);
     cursor: pointer;
-    letter-spacing: .02em;
-    transition: background .15s, transform .1s, box-shadow .15s;
     box-shadow: 0 4px 14px rgba(194,24,91,0.35);
+    transition: background .15s, transform .1s, box-shadow .15s;
   }
-  #spin-btn:hover { background: var(--magenta-light); box-shadow: 0 6px 18px rgba(233,30,140,0.4); }
+  #spin-btn:hover { background: var(--mg-light); }
   #spin-btn:active { transform: scale(0.97); }
-  #spin-btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+  #spin-btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 
-  /* ── RESULT ── */
+  .legend {
+    display: flex; gap: 14px;
+    font-size: 12px; font-weight: 700; color: var(--text-mid);
+    align-items: center;
+  }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
   #result-box {
     width: 320px;
-    border-radius: 16px;
-    padding: 16px 20px;
+    border-radius: 14px;
+    padding: 14px 18px;
     text-align: center;
     border: 2px solid var(--gray-light);
     background: var(--white);
     transition: background .3s, border-color .3s;
-    min-height: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    min-height: 76px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     gap: 3px;
   }
-  #result-cat {
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: .09em;
-    color: var(--text-mid);
-  }
-  #result-label {
-    font-size: 18px;
-    font-weight: 900;
-    color: var(--text-dark);
-  }
-  #result-hint {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-mid);
-    margin-top: 2px;
+  #result-cat { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; }
+  #result-label { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+  #result-hint { font-size: 13px; font-weight: 600; margin-top: 2px; }
+
+  /* Scores */
+  .score-col {
+    display: flex; flex-direction: column;
+    gap: 10px;
+    min-width: 220px; flex: 1; max-width: 320px;
   }
 
-  /* ── SCORES ── */
-  .score-col {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-width: 220px;
-    flex: 1;
-    max-width: 320px;
+  .score-header {
+    display: flex; align-items: center; justify-content: space-between;
   }
 
   .score-title {
-    font-size: 13px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    color: var(--magenta-dark);
-    margin-bottom: 2px;
+    font-size: 12px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .07em;
+    color: var(--mg-dark);
   }
+
+  .add-team-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--mg);
+    background: transparent;
+    color: var(--mg);
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: all .12s;
+  }
+  .add-team-btn:hover { background: var(--mg); color: var(--white); }
 
   .team-card {
     background: var(--white);
     border: 2px solid var(--gray-light);
     border-radius: 14px;
-    padding: 12px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    padding: 10px 12px;
+    display: flex; flex-direction: column; gap: 7px;
     transition: border-color .2s;
   }
-  .team-card.active-team { border-color: var(--magenta); }
+  .team-card.active-team { border-color: var(--mg); }
 
   .team-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
   }
 
-  .team-name {
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--text-dark);
+  .team-name-display {
+    font-size: 14px; font-weight: 800; color: var(--text-dark);
+    cursor: pointer; border-bottom: 1px dashed var(--gray-light);
+    padding-bottom: 1px;
+  }
+  .team-name-display:hover { border-color: var(--mg); color: var(--mg); }
+
+  .team-name-input {
+    font-size: 14px; font-weight: 800;
+    border: none; border-bottom: 2px solid var(--mg);
+    background: transparent; color: var(--text-dark);
+    font-family: 'Nunito', sans-serif;
+    outline: none; width: 100%;
   }
 
-  .team-flag {
-    font-size: 20px;
+  .remove-team-btn {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gray-light);
+    background: transparent;
+    color: var(--text-mid);
+    font-size: 14px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    line-height: 1;
+    transition: all .12s;
+    flex-shrink: 0;
   }
+  .remove-team-btn:hover { background: #FCE4EC; border-color: var(--mg); color: var(--mg); }
 
   .team-score-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: flex; align-items: center; gap: 8px;
   }
 
   .score-display {
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--magenta);
-    min-width: 40px;
+    font-size: 28px; font-weight: 900; color: var(--mg);
+    min-width: 38px;
   }
 
-  .score-btns {
-    display: flex;
-    gap: 5px;
-  }
+  .score-btns { display: flex; gap: 5px; }
 
   .score-btn {
-    width: 30px; height: 30px;
+    width: 28px; height: 28px;
     border-radius: 50%;
-    border: 2px solid var(--magenta);
-    background: transparent;
-    color: var(--magenta);
-    font-size: 18px;
-    font-weight: 900;
+    border: 2px solid var(--mg);
+    background: transparent; color: var(--mg);
+    font-size: 16px; font-weight: 900;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background .12s, color .12s;
     font-family: 'Nunito', sans-serif;
     line-height: 1;
   }
-  .score-btn:hover { background: var(--magenta); color: var(--white); }
+  .score-btn:hover { background: var(--mg); color: var(--white); }
   .score-btn.minus { border-color: var(--gray-light); color: var(--text-mid); }
   .score-btn.minus:hover { background: var(--gray-light); color: var(--text-dark); }
 
-  .pts-btns {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-  }
+  .pts-btns { display: flex; gap: 5px; flex-wrap: wrap; }
 
   .pts-btn {
-    padding: 4px 10px;
+    padding: 4px 9px;
     border-radius: 20px;
-    border: 1.5px solid var(--magenta-pale);
-    background: var(--magenta-pale);
-    color: var(--magenta-dark);
-    font-size: 12px;
-    font-weight: 800;
+    border: 1.5px solid var(--mg-pale);
+    background: var(--mg-pale);
+    color: var(--mg-dark);
+    font-size: 12px; font-weight: 800;
     cursor: pointer;
     font-family: 'Nunito', sans-serif;
-    transition: background .12s, border-color .12s;
+    transition: all .12s;
   }
-  .pts-btn:hover { background: var(--magenta); color: var(--white); border-color: var(--magenta); }
+  .pts-btn:hover { background: var(--mg); color: var(--white); border-color: var(--mg); }
 
   .reset-btn {
     width: 100%;
@@ -271,162 +423,224 @@
     border: 1.5px solid var(--gray-light);
     background: transparent;
     color: var(--text-mid);
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 13px; font-weight: 700;
     cursor: pointer;
     font-family: 'Nunito', sans-serif;
     transition: background .12s;
-    margin-top: 4px;
   }
   .reset-btn:hover { background: var(--gray-light); }
-
-  .legend {
-    display: flex;
-    gap: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-mid);
-    align-items: center;
-  }
-  .legend-dot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo-badge">Hérault Sport</div>
-  <h1>La Roue Europe</h1>
-</header>
-
-<div class="main-layout">
-
-  <!-- ROUE -->
-  <div class="wheel-col">
-    <div id="wheel-wrap">
-      <div id="pointer"></div>
-      <canvas id="wheel-canvas" width="320" height="320"></canvas>
+<!-- ══ ÉCRAN CONFIG ══ -->
+<div id="screen-config">
+  <div class="config-card">
+    <div class="config-logo">
+      <div class="config-badge">Hérault Sport</div>
+      <div class="config-title">La Roue</div>
     </div>
 
-    <div class="legend">
-      <span class="legend-dot" style="background:#C2185B"></span> Question
-      <span class="legend-dot" style="background:#EEE8EC; border: 1.5px solid #C2185B"></span> Défi
-      <span class="legend-dot" style="background:#EEE8EC; border: 1.5px solid #C2185B"></span> Défi au choix
+    <div class="config-section-title">Nombre d'équipes</div>
+    <div class="nb-equipes-row">
+      <button class="nb-btn" onclick="setNb(2)">2</button>
+      <button class="nb-btn selected" onclick="setNb(3)">3</button>
+      <button class="nb-btn" onclick="setNb(4)">4</button>
+      <button class="nb-btn" onclick="setNb(5)">5</button>
     </div>
 
-    <button id="spin-btn" onclick="spin()">Tourner !</button>
+    <div class="config-section-title">Noms des équipes</div>
+    <div class="equipes-list" id="equipes-list"></div>
 
-    <div id="result-box">
-      <div id="result-cat" style="color:#B0899E">En attente</div>
-      <div id="result-label" style="color:#B0899E; font-size:15px">Appuie sur Tourner !</div>
-      <div id="result-hint"></div>
-    </div>
+    <button class="start-btn" onclick="startAnim()">Lancer l'animation !</button>
   </div>
+</div>
 
-  <!-- SCORES -->
-  <div class="score-col">
-    <div class="score-title">Scores des équipes</div>
+<!-- ══ ÉCRAN ANIMATION ══ -->
+<div id="screen-anim">
+  <header>
+    <div class="header-left">
+      <div class="logo-badge">Hérault Sport</div>
+      <h1>La Roue</h1>
+    </div>
+    <button class="back-btn" onclick="goConfig()">⬅ Reconfigurer</button>
+  </header>
 
-    <div class="team-card" id="card-0">
-      <div class="team-top">
-        <div class="team-name">Équipe France</div>
-        <div class="team-flag">🇫🇷</div>
+  <div class="main-layout">
+
+    <!-- ROUE -->
+    <div class="wheel-col">
+      <div id="wheel-wrap">
+        <div id="pointer"></div>
+        <canvas id="wheel-canvas" width="320" height="320"></canvas>
       </div>
-      <div class="team-score-row">
-        <div class="score-display" id="score-0">0</div>
-        <div class="score-btns">
-          <button class="score-btn minus" onclick="addScore(0,-1)">−</button>
-          <button class="score-btn" onclick="addScore(0,1)">+</button>
-        </div>
-        <div class="pts-btns">
-          <button class="pts-btn" onclick="addScore(0,2)">+2</button>
-          <button class="pts-btn" onclick="addScore(0,3)">+3</button>
-        </div>
+      <div class="legend">
+        <span class="legend-dot" style="background:#C2185B"></span> Question
+        <span class="legend-dot" style="background:#EEE8EC; border:1.5px solid #C2185B"></span> Défi
+      </div>
+      <button id="spin-btn" onclick="spin()">Tourner !</button>
+      <div id="result-box">
+        <div id="result-cat" style="color:#B0899E">En attente</div>
+        <div id="result-label" style="color:#B0899E; font-size:15px">Appuie sur Tourner !</div>
+        <div id="result-hint"></div>
       </div>
     </div>
 
-    <div class="team-card" id="card-1">
-      <div class="team-top">
-        <div class="team-name">Équipe Espagne</div>
-        <div class="team-flag">🇪🇸</div>
+    <!-- SCORES -->
+    <div class="score-col">
+      <div class="score-header">
+        <div class="score-title">Scores</div>
+        <button class="add-team-btn" onclick="addTeam()">+ Équipe</button>
       </div>
-      <div class="team-score-row">
-        <div class="score-display" id="score-1">0</div>
-        <div class="score-btns">
-          <button class="score-btn minus" onclick="addScore(1,-1)">−</button>
-          <button class="score-btn" onclick="addScore(1,1)">+</button>
-        </div>
-        <div class="pts-btns">
-          <button class="pts-btn" onclick="addScore(1,2)">+2</button>
-          <button class="pts-btn" onclick="addScore(1,3)">+3</button>
-        </div>
-      </div>
+      <div id="teams-container"></div>
+      <button class="reset-btn" onclick="resetScores()">Remettre les scores à zéro</button>
     </div>
 
-    <div class="team-card" id="card-2">
-      <div class="team-top">
-        <div class="team-name">Équipe Italie</div>
-        <div class="team-flag">🇮🇹</div>
-      </div>
-      <div class="team-score-row">
-        <div class="score-display" id="score-2">0</div>
-        <div class="score-btns">
-          <button class="score-btn minus" onclick="addScore(2,-1)">−</button>
-          <button class="score-btn" onclick="addScore(2,1)">+</button>
-        </div>
-        <div class="pts-btns">
-          <button class="pts-btn" onclick="addScore(2,2)">+2</button>
-          <button class="pts-btn" onclick="addScore(2,3)">+3</button>
-        </div>
-      </div>
-    </div>
-
-    <button class="reset-btn" onclick="resetScores()">Remettre les scores à zéro</button>
   </div>
-
 </div>
 
 <script>
-const segments = [
-  { label: "Question", sub: "Drapeaux & capitales",   cat: "question" },
-  { label: "Question", sub: "Sports & JO",            cat: "question" },
-  { label: "Défi",     sub: "Tir à la corde",         cat: "defi"     },
-  { label: "Question", sub: "Culture & traditions",   cat: "question" },
-  { label: "Question", sub: "Chiffres & anecdotes",   cat: "question" },
-  { label: "Défi",     sub: "Morpion géant",          cat: "defi"     },
-  { label: "Question", sub: "Pays européens",         cat: "question" },
-  { label: "Question", sub: "Drapeaux & capitales",   cat: "question" },
-  { label: "Défi",     sub: "Blaze Pods",             cat: "defi"     },
-  { label: "Question", sub: "Sports & JO",            cat: "question" },
-  { label: "Question", sub: "Culture & traditions",   cat: "question" },
-  { label: "Défi",     sub: "Au choix !",             cat: "choix"    },
-  { label: "Question", sub: "Chiffres & anecdotes",   cat: "question" },
-  { label: "Question", sub: "Pays européens",         cat: "question" },
-];
+// ══ ÉTAT ══
+let nbEquipes = 3;
+let teams = [];
+let scores = [];
+let spinning = false;
+let currentAngle = -Math.PI / 2;
 
-const COL_Q   = "#C2185B";
-const COL_Q2  = "#AD1457";
-const COL_D   = "#F8F5F7";
-const COL_D2  = "#EEE8EC";
-const COL_C   = "#F8F5F7";
-const COL_C2  = "#EEE8EC";
+const defaultNames = ["Équipe 1","Équipe 2","Équipe 3","Équipe 4","Équipe 5"];
+
+// ══ CONFIG ══
+function setNb(n) {
+  nbEquipes = n;
+  document.querySelectorAll('.nb-btn').forEach((b,i) => {
+    b.classList.toggle('selected', i+2 === n);
+  });
+  renderInputs();
+}
+
+function renderInputs() {
+  const list = document.getElementById('equipes-list');
+  const existing = [...list.querySelectorAll('.equipe-input')].map(i => i.value);
+  list.innerHTML = '';
+  for (let i = 0; i < nbEquipes; i++) {
+    const row = document.createElement('div');
+    row.className = 'equipe-input-row';
+    row.innerHTML = `
+      <div class="equipe-num">${i+1}</div>
+      <input class="equipe-input" type="text" placeholder="${defaultNames[i]}" value="${existing[i] || ''}">
+    `;
+    list.appendChild(row);
+  }
+}
+
+function startAnim() {
+  const inputs = document.querySelectorAll('.equipe-input');
+  teams = [];
+  scores = [];
+  inputs.forEach((inp, i) => {
+    teams.push(inp.value.trim() || defaultNames[i]);
+    scores.push(0);
+  });
+  document.getElementById('screen-config').style.display = 'none';
+  document.getElementById('screen-anim').style.display = 'flex';
+  renderTeams();
+  drawWheel(currentAngle);
+}
+
+function goConfig() {
+  document.getElementById('screen-anim').style.display = 'none';
+  document.getElementById('screen-config').style.display = 'flex';
+}
+
+// ══ ÉQUIPES ══
+function renderTeams() {
+  const container = document.getElementById('teams-container');
+  container.innerHTML = '';
+  const maxScore = Math.max(...scores);
+  teams.forEach((name, i) => {
+    const card = document.createElement('div');
+    card.className = 'team-card' + (scores[i] === maxScore && maxScore > 0 ? ' active-team' : '');
+    card.id = 'card-' + i;
+    card.innerHTML = `
+      <div class="team-top">
+        <span class="team-name-display" onclick="editName(${i})" title="Cliquer pour renommer" id="name-display-${i}">${name}</span>
+        <button class="remove-team-btn" onclick="removeTeam(${i})">×</button>
+      </div>
+      <div class="team-score-row">
+        <div class="score-display" id="score-${i}">${scores[i]}</div>
+        <div class="score-btns">
+          <button class="score-btn minus" onclick="addScore(${i},-1)">−</button>
+          <button class="score-btn" onclick="addScore(${i},1)">+</button>
+        </div>
+        <div class="pts-btns">
+          <button class="pts-btn" onclick="addScore(${i},2)">+2</button>
+          <button class="pts-btn" onclick="addScore(${i},3)">+3</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function editName(i) {
+  const display = document.getElementById('name-display-' + i);
+  const input = document.createElement('input');
+  input.className = 'team-name-input';
+  input.value = teams[i];
+  input.onblur = () => { teams[i] = input.value.trim() || teams[i]; renderTeams(); };
+  input.onkeydown = (e) => { if (e.key === 'Enter') input.blur(); };
+  display.replaceWith(input);
+  input.focus();
+  input.select();
+}
+
+function addTeam() {
+  if (teams.length >= 6) return;
+  teams.push('Équipe ' + (teams.length + 1));
+  scores.push(0);
+  renderTeams();
+}
+
+function removeTeam(i) {
+  if (teams.length <= 2) return;
+  teams.splice(i, 1);
+  scores.splice(i, 1);
+  renderTeams();
+}
+
+function addScore(i, pts) {
+  scores[i] = Math.max(0, scores[i] + pts);
+  renderTeams();
+}
+
+function resetScores() {
+  scores.fill(0);
+  renderTeams();
+}
+
+// ══ ROUE ══
+const segments = [
+  { label: "Question ?", cat: "question" },
+  { label: "Question ?", cat: "question" },
+  { label: "Défi",       cat: "defi"     },
+  { label: "Question ?", cat: "question" },
+  { label: "Question ?", cat: "question" },
+  { label: "Question ?", cat: "question" },
+  { label: "Défi",       cat: "defi"     },
+  { label: "Question ?", cat: "question" },
+  { label: "Question ?", cat: "question" },
+  { label: "Question ?", cat: "question" },
+];
 
 const N = segments.length;
 const arc = (2 * Math.PI) / N;
 const canvas = document.getElementById('wheel-canvas');
 const ctx = canvas.getContext('2d');
 const cx = 160, cy = 160, r = 152;
-let currentAngle = -Math.PI / 2;
-let spinning = false;
-const scores = [0, 0, 0];
 
 function segColor(seg, i) {
-  if (seg.cat === 'choix') return i % 2 === 0 ? COL_C : COL_C2;
-  if (seg.cat === 'defi') return i % 2 === 0 ? COL_D : COL_D2;
-  return i % 2 === 0 ? COL_Q : COL_Q2;
+  if (seg.cat === 'defi') return i % 2 === 0 ? '#F8F5F7' : '#EEE8EC';
+  return i % 2 === 0 ? '#C2185B' : '#AD1457';
 }
 
 function drawWheel(angle) {
@@ -442,27 +656,19 @@ function drawWheel(angle) {
     ctx.fillStyle = segColor(seg, i);
     ctx.fill();
     ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.stroke();
 
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(start + arc / 2);
-
     ctx.textAlign = 'right';
-    ctx.fillStyle = seg.cat === 'question' ? '#ffffff' : seg.cat === 'choix' ? '#4A2700' : '#880E4F';
-
-    ctx.font = '700 12px Nunito, sans-serif';
-    ctx.fillText(seg.label, r - 10, -5);
-
-    ctx.font = '600 9px Nunito, sans-serif';
-    ctx.globalAlpha = 0.85;
-    ctx.fillText(seg.sub, r - 10, 7);
-    ctx.globalAlpha = 1;
-
+    ctx.fillStyle = seg.cat === 'question' ? '#ffffff' : '#880E4F';
+    ctx.font = '700 13px Nunito, sans-serif';
+    ctx.fillText(seg.label, r - 12, 5);
     ctx.restore();
   }
-
+  // Centre
   ctx.beginPath();
   ctx.arc(cx, cy, 24, 0, 2 * Math.PI);
   ctx.fillStyle = '#C2185B';
@@ -470,7 +676,6 @@ function drawWheel(angle) {
   ctx.strokeStyle = '#fff';
   ctx.lineWidth = 3;
   ctx.stroke();
-
   ctx.font = '900 10px Nunito, sans-serif';
   ctx.fillStyle = '#fff';
   ctx.textAlign = 'center';
@@ -489,12 +694,12 @@ function spin() {
   spinning = true;
   document.getElementById('spin-btn').disabled = true;
 
-  document.getElementById('result-cat').textContent = '';
-  document.getElementById('result-label').textContent = '...';
-  document.getElementById('result-hint').textContent = '';
   const box = document.getElementById('result-box');
   box.style.background = '#fff';
   box.style.borderColor = '#EEE8EC';
+  document.getElementById('result-cat').textContent = '';
+  document.getElementById('result-label').textContent = '...';
+  document.getElementById('result-hint').textContent = '';
 
   const extraSpins = (6 + Math.floor(Math.random() * 5)) * 2 * Math.PI;
   const targetAngle = currentAngle + extraSpins + Math.random() * 2 * Math.PI;
@@ -515,8 +720,7 @@ function spin() {
       currentAngle = targetAngle;
       spinning = false;
       document.getElementById('spin-btn').disabled = false;
-      const winner = getWinner(currentAngle);
-      showResult(winner);
+      showResult(getWinner(currentAngle));
     }
   }
   requestAnimationFrame(animate);
@@ -529,42 +733,29 @@ function showResult(winner) {
   const hint = document.getElementById('result-hint');
 
   if (winner.cat === 'question') {
-    box.style.background = '#E3F2FD';
-    box.style.borderColor = '#1E88E5';
-    cat.style.color = '#1565C0';
-    lbl.style.color = '#0D47A1';
-    hint.style.color = '#1565C0';
+    box.style.background = '#FCE4EC';
+    box.style.borderColor = '#C2185B';
+    cat.style.color = '#880E4F';
+    lbl.style.color = '#880E4F';
+    hint.style.color = '#C2185B';
     cat.textContent = 'Question';
-    hint.textContent = 'Lis la question a voix haute !';
+    lbl.textContent = 'Question ?';
+    hint.textContent = 'Lis la question à voix haute !';
   } else {
-    box.style.background = '#E8F5E9';
-    box.style.borderColor = '#43A047';
-    cat.style.color = '#2E7D32';
-    lbl.style.color = '#1B5E20';
-    hint.style.color = '#2E7D32';
-    cat.textContent = 'Defi sportif';
-    hint.textContent = 'Lancez le defi immediatement !';
+    box.style.background = '#F8F5F7';
+    box.style.borderColor = '#C2185B';
+    cat.style.color = '#880E4F';
+    lbl.style.color = '#1A0A10';
+    hint.style.color = '#880E4F';
+    cat.textContent = 'Défi sportif';
+    lbl.textContent = 'Défi !';
+    hint.textContent = 'Lancez le défi immédiatement !';
   }
-  lbl.textContent = winner.sub;
 }
 
-function addScore(team, pts) {
-  scores[team] = Math.max(0, scores[team] + pts);
-  document.getElementById('score-' + team).textContent = scores[team];
-  document.querySelectorAll('.team-card').forEach((c, i) => {
-    c.classList.toggle('active-team', scores[i] === Math.max(...scores) && scores[i] > 0);
-  });
-}
-
-function resetScores() {
-  scores.fill(0);
-  for (let i = 0; i < 3; i++) {
-    document.getElementById('score-' + i).textContent = '0';
-  }
-  document.querySelectorAll('.team-card').forEach(c => c.classList.remove('active-team'));
-}
-
-drawWheel(currentAngle);
+// Init
+setNb(3);
+renderInputs();
 </script>
 </body>
 </html>
